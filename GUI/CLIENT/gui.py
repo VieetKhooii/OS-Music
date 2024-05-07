@@ -10,7 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 import sys
 import numpy as np
-import pyaudio
+# import pyaudio
 import AlbumGUI
 import MusicGUI
 import TrangchuGUI
