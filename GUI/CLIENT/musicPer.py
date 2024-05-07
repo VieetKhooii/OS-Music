@@ -14,7 +14,7 @@ from Client import Client
 from gui import Ui_MusicPlayer
 import pygame
 import os
-import mutagen
+# import mutagen
 
 class Ui_Form(QWidget):
     def __init__(self, id, name, artist, img, link):
