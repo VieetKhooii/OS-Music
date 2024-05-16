@@ -223,8 +223,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>270</y>
+      <x>400</x>
+      <y>250</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -328,6 +328,38 @@
      </property>
     </item>
    </widget>
+   <widget class="QPushButton" name="importBtn_2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>180</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Import</string>
+    </property>
+   </widget>
+   <zorder>musicIdTxt</zorder>
+   <zorder>updateBtn</zorder>
+   <zorder>saveBtn</zorder>
+   <zorder>musicIdlabel</zorder>
+   <zorder>musicNameLabel</zorder>
+   <zorder>musicNameTxt</zorder>
+   <zorder>artistLabel</zorder>
+   <zorder>artistTxt</zorder>
+   <zorder>thumbnailLabel</zorder>
+   <zorder>thumbNailTxt</zorder>
+   <zorder>tableWidget</zorder>
+   <zorder>fileTxt</zorder>
+   <zorder>fileLabel</zorder>
+   <zorder>categoryComboBox</zorder>
+   <zorder>importBtn</zorder>
+   <zorder>importBtn_2</zorder>
   </widget>
  </widget>
  <resources/>
