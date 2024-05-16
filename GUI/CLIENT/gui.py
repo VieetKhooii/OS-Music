@@ -33,6 +33,7 @@ class Ui_MusicPlayer(QMainWindow):
         self.leftMenu = QGroupBox(parent=self.centralwidget)
         self.leftMenu.setGeometry(QtCore.QRect(0, 50, 171, 441))
         self.leftMenu.setObjectName("leftMenu")
+        self.leftMenu.setStyleSheet("QGroupBox { background-color: #000000; }")
         #---btnTrangChu
         self.btnTrangchu = QPushButton(parent=self.leftMenu)
         self.btnTrangchu.setGeometry(QtCore.QRect(15, 15, 141, 61))
@@ -123,6 +124,7 @@ class Ui_MusicPlayer(QMainWindow):
         self.groupBox.setGeometry(QtCore.QRect(0, 0, 911, 51))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
+        self.groupBox.setStyleSheet("QGroupBox { background-color: #0000ff; }")
         self.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(parent=self.centralwidget)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 911, 21))

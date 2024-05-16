@@ -13,7 +13,7 @@ import json
 class Server(QThread):
     message_received = pyqtSignal(str)
     stopped =pyqtSignal()
-    host = '192.168.88.220'#192.168.93.104
+    host = 'localhost'
     port = 3307
     def __init__(self):
         super().__init__()

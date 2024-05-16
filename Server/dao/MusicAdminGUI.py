@@ -21,6 +21,8 @@ class MusicAdminGUI(QMainWindow):
         self.startBtn.clicked.connect(self.start_server)
         self.closeBtn.clicked.connect(self.close_server)
         self.theLoaiBtn.clicked.connect(self.show_category_tab)
+        from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
+        print("Qt: v", QT_VERSION_STR, "\tPyQt: v", PYQT_VERSION_STR)
 
     def start_server(self):
         self.server.run()
