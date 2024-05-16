@@ -57,7 +57,7 @@ class Ui_Form(QWidget):
         self.pushButton.clicked.connect(self.playSong)
 
         self.btnPlayList = QtWidgets.QPushButton(parent=self.frame)
-        self.btnPlayList.setGeometry(QtCore.QRect(540, 10, 61, 61))
+        self.btnPlayList.setGeometry(QtCore.QRect(480, 10, 61, 61))
         self.btnPlayList.setObjectName("pushButton")
         self.btnPlayList.clicked.connect(self.sendshowToPlaylist)
 
@@ -73,7 +73,9 @@ class Ui_Form(QWidget):
         self.icon4 = QtGui.QIcon()
         self.icon4.addPixmap(QtGui.QPixmap("img/play-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton.setIcon(self.icon4)
-
+        self.iconplaylist = QtGui.QIcon()
+        self.iconplaylist.addPixmap(QtGui.QPixmap("img/addtoplaylist.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.btnPlayList.setIcon(self.iconplaylist)
     def sendshowToPlaylist(self):
         client = Client()
         client.connect()
