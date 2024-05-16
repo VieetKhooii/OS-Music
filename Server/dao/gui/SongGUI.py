@@ -3,17 +3,17 @@ import os
 import shutil
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QFileDialog, QPushButton, QWidget
 from PyQt5.uic import loadUi
-from dao.MusicDAO import MusicDAO
-from dao.CategoryDAO import CategoryDAO
+from AdminMusicDao import AdminMusicDAO
+from AdminCategoryDao import AdminCategoryDAO
 
 class SongGUI(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        loadUi(r"C:\Users\VieetKhooii\OneDrive\Desktop\OSMusic\OS-Music\GUI\ADMIN\SongUI.ui", self)
+        loadUi(r"C:\Users\VieetKhooii\OneDrive\Documents\ForkGit\OS-Music\GUI\ADMIN\SongUI.ui", self)
         self.setWindowTitle("Song")
         # self.setFixedSize(600, 400)
-        self.music_dao = MusicDAO()
-        self.category_dao = CategoryDAO()
+        self.music_dao = AdminMusicDAO()
+        self.category_dao = AdminCategoryDAO()
         self.saveBtn.clicked.connect(self.save_music)
         self.updateBtn.clicked.connect(self.update_music)
         self.tableWidget.itemClicked.connect(self.show_selected_music)
@@ -78,9 +78,10 @@ class SongGUI(QWidget):
                 if self.music_dao.create_music(name, artist, thumbnail, link, category_id):
                     print("music created successfully.")
                     destination_dir = "C:/Users/VieetKhooii/OneDrive/Desktop/OSMusic/OS-Music/Server/songs"
-                    thumbnail_dir = "C:\Users\VieetKhooii\OneDrive\Desktop\OSMusic\OS-Music\Server\dao\imgs"
+                    thumbnail_dir = "C:/Users/VieetKhooii/OneDrive/Desktop/OSMusic/OS-Music/Server/dao/imgs"
                     shutil.copy(self.file_path, destination_dir)
-                    shutil.copy(self.thumbnailFile, thumbnail_dir)
+                    if thumbnail:
+                        shutil.copy(self.thumbnailFile, thumbnail_dir)
                     print("File copied to:", destination_dir)
                     self.musicNameTxt.clear()
                     self.populate_table()
@@ -117,8 +118,12 @@ class SongGUI(QWidget):
     def update_music(self):
         name = self.musicNameTxt.toPlainText()
         id = self.musicIdTxt.toPlainText()
+        artist = self.artistTxt.toPlainText()
+        thumbnail = self.thumbNailTxt.toPlainText()
+        selected_item = self.categoryComboBox.currentText()
+        category_id = selected_item.split(' - ')[-1]
         if name and id:
-            if self.music_dao.update_music(name, id):
+            if self.music_dao.update_music(name, artist, thumbnail, category_id, id):
                 print("music updated successfully.")
                 # Optionally, you can clear the text field after saving
                 self.musicNameTxt.clear()

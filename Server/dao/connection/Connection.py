@@ -8,7 +8,7 @@ class Connection:
                 host='localhost',
                 database='music',
                 username='root',
-                password='@Abc1234'
+                password=''
             )
             cursor = self.connection.cursor()
             cursor.execute("select database();")

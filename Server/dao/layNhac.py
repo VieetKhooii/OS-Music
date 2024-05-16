@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         self.button2.setGeometry(50, 120, 200, 50)
         # self.button2.clicked.connect(lambda: self.request_audio_data(2))
 
-        self.server_address = ('localhost', 3306)  # Địa chỉ và cổng của máy chủ
+        self.server_address = ('localhost', 3307)  # Địa chỉ và cổng của máy chủ
 
     def get_music(self):
         print(NhacBUS.getData(self))

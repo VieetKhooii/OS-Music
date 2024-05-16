@@ -13,8 +13,8 @@ import json
 class Server(QThread):
     message_received = pyqtSignal(str)
     stopped =pyqtSignal()
-    host = 'localhost'#192.168.93.104
-    port = 3306
+    host = '192.168.88.220'#192.168.93.104
+    port = 3307
     def __init__(self):
         super().__init__()
         self.running = False
@@ -172,5 +172,3 @@ class Server(QThread):
             while data:
                 self.clientSocket.sendall(data)
                 data = image_file.read(2048)
-server = Server()
-server.run()

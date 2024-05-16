@@ -5,7 +5,7 @@ import tempfile
 import os
 class Client():
     host = 'localhost'
-    port = 3306
+    port = 3307
 
     def __init__(self):
         self.socket = None

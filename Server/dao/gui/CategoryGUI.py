@@ -1,15 +1,15 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QTableWidgetItem, QVBoxLayout
 from PyQt5.uic import loadUi
-from dao.CategoryDAO import CategoryDAO
+from AdminCategoryDao import AdminCategoryDAO
 
 class CategoryGUI(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        loadUi(r"C:\Users\VieetKhooii\OneDrive\Desktop\OSMusic\OS-Music\GUI\ADMIN\Category.ui", self)
+        loadUi(r"C:\Users\VieetKhooii\OneDrive\Documents\ForkGit\OS-Music\GUI\ADMIN\Category.ui", self)
         self.setWindowTitle("Category")
         # self.setFixedSize(600, 400)
-        self.category_dao = CategoryDAO()  # Create an instance of CategoryDAO
+        self.category_dao = AdminCategoryDAO()  # Create an instance of CategoryDAO
         self.saveBtn.clicked.connect(self.save_category)
         self.updateBtn.clicked.connect(self.update_category)
         self.tableWidget.itemClicked.connect(self.show_selected_category)

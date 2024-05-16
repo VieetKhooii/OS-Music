@@ -1,9 +1,9 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QTableWidgetItem
 from PyQt5.uic import loadUi
-from dao.PlaylistDAO import PlaylistDAO
+from dao.AdminPlaylistDao import AdminPlaylistDAO
 from dao.MusicPlaylistDAO import MusicPlaylistDao
-from dao.MusicDAO import MusicDAO
+from dao.AdminMusicDao import AdminMusicDAO
 
 class PlaylistGUI(QWidget):
     def __init__(self, parent=None):
@@ -11,8 +11,8 @@ class PlaylistGUI(QWidget):
         loadUi(r"C:\Users\VieetKhooii\OneDrive\Desktop\OSMusic\OS-Music\GUI\ADMIN\Playlist.ui", self)
         self.setWindowTitle("Playlist")
         # self.setFixedSize(600, 400)
-        self.playlist_dao = PlaylistDAO()
-        self.music_dao = MusicDAO()
+        self.playlist_dao = AdminPlaylistDAO()
+        self.music_dao = AdminMusicDAO()
         self.music_playlist_dao = MusicPlaylistDao()
         self.saveBtn.clicked.connect(self.save_playlist)
         self.updateBtn.clicked.connect(self.update_playlist)
