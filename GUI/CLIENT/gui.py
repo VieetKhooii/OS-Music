@@ -27,13 +27,13 @@ class Ui_MusicPlayer(QMainWindow):
                 self.pg = PlaylistGUI.PlaylistGUI()
                 self.listPlaylist = self.pg.returnPlaylist()
     def setupUi(self):
-        self.resize(911, 630)
+        self.resize(740, 550)
         self.centralwidget = QWidget()
         self.centralwidget.setObjectName("centralwidget")
         self.leftMenu = QGroupBox(parent=self.centralwidget)
-        self.leftMenu.setGeometry(QtCore.QRect(0, 50, 171, 441))
+        self.leftMenu.setGeometry(QtCore.QRect(0, 50, 171, 460))
         self.leftMenu.setObjectName("leftMenu")
-        self.leftMenu.setStyleSheet("QGroupBox { background-color: #000000; }")
+        self.leftMenu.setStyleSheet("QGroupBox { background-color: rgb(114,139,162); }")
         #---btnTrangChu
         self.btnTrangchu = QPushButton(parent=self.leftMenu)
         self.btnTrangchu.setGeometry(QtCore.QRect(15, 15, 141, 61))
@@ -108,11 +108,11 @@ class Ui_MusicPlayer(QMainWindow):
         # self.lbTimetong.setObjectName("lbTimetong")
 
         self.scrollArea = QScrollArea(parent=self.centralwidget)
-        self.scrollArea.setGeometry(QtCore.QRect(170, 50, 742, 441))
+        self.scrollArea.setGeometry(QtCore.QRect(170, 50, 620, 480))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 742, 439))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 620, 480))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.layout = QGridLayout()
         self.layout.setHorizontalSpacing(0)
@@ -124,7 +124,7 @@ class Ui_MusicPlayer(QMainWindow):
         self.groupBox.setGeometry(QtCore.QRect(0, 0, 911, 51))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
-        self.groupBox.setStyleSheet("QGroupBox { background-color: #0000ff; }")
+        self.groupBox.setStyleSheet("QGroupBox { background-color:rgb(173,203,202); }")
         self.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(parent=self.centralwidget)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 911, 21))
@@ -138,7 +138,7 @@ class Ui_MusicPlayer(QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
         #-------------------------Trang
         self.pagesPn = QFrame(parent=self.scrollArea)
-        self.pagesPn.setGeometry(QtCore.QRect(0, 0, 742, 440))
+        self.pagesPn.setGeometry(QtCore.QRect(0, 0, 620, 480))
         self.pagesPn.setStyleSheet("background-color: #F6F6F6;\n"
 "")
         self.pagesPn.setFrameShape(QFrame.Shape.StyledPanel)
@@ -146,7 +146,7 @@ class Ui_MusicPlayer(QMainWindow):
         self.pagesPn.setObjectName("pagesPn")
 
         self.pagesWidget = QStackedWidget(parent=self.pagesPn)
-        self.pagesWidget.setGeometry(QtCore.QRect(0, 0, 742, 550))
+        self.pagesWidget.setGeometry(QtCore.QRect(0, 0, 620, 480))
         self.pagesWidget.setObjectName("pagesWidget")
         self.categoryGUI = CategoryGUI.CategoryGUI()
         self.categoryGUI.setObjectName("TrangchuGUI")

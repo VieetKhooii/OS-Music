@@ -38,7 +38,7 @@ class Ui_Form(QWidget):
         # self.setImageToQLabelFromPlaylist()
 
         self.TenCate = QtWidgets.QLabel(parent=self.frame)
-        self.TenCate.setGeometry(QtCore.QRect(130, 20, 441, 20))
+        self.TenCate.setGeometry(QtCore.QRect(80, 20, 441, 40))
         self.TenCate.setStyleSheet("color: rgb(255, 255, 255);")
         self.TenCate.setObjectName("lblTenBaiHat")
 
@@ -51,7 +51,7 @@ class Ui_Form(QWidget):
         icon.addPixmap(QtGui.QPixmap(""), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
         self.btnCate = QtWidgets.QPushButton(parent=self.frame)
-        self.btnCate.setGeometry(QtCore.QRect(390, 10, 51, 61))
+        self.btnCate.setGeometry(QtCore.QRect(390, 10, 61, 61))
         self.btnCate.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(""), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -65,7 +65,13 @@ class Ui_Form(QWidget):
         self.retranslateUi()
 
     def retranslateUi(self):
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.TenCate.setFont(font)
         self.TenCate.setText(self.name)
+        self.iconcate = QtGui.QIcon()
+        self.iconcate.addPixmap(QtGui.QPixmap("img/showlist.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.btnCate.setIcon(self.iconcate)
     def clearLayout(self, layout):
         while layout.count():
             child = layout.takeAt(0)

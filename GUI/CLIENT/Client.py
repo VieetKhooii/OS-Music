@@ -4,7 +4,7 @@ import pygame
 import tempfile
 import os
 class Client():
-    host = 'localhost'
+    host = '192.168.88.220'
     port = 3307
 
     def __init__(self):

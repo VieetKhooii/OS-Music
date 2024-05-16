@@ -26,7 +26,7 @@ class Ui_Form(QWidget):
         self.resize(585, 94)
         self.frame = QtWidgets.QFrame(self)
         self.frame.setGeometry(QtCore.QRect(10, 10, 571, 80))
-        self.frame.setStyleSheet("background-color: rgb(85, 0, 127);")
+        self.frame.setStyleSheet("background-color: rgb(191,145,213);")
         self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame.setObjectName("frame")
@@ -66,8 +66,9 @@ class Ui_Form(QWidget):
 
     def retranslateUi(self):
         self.TenPlayList.setText(self.name)
-
-
+        self.iconplaylist = QtGui.QIcon()
+        self.iconplaylist.addPixmap(QtGui.QPixmap("img/showlist.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.btnPlayList.setIcon(self.iconplaylist)
     def clearLayout(self, layout):
         while layout.count():
             child = layout.takeAt(0)

@@ -21,14 +21,14 @@ class MusicGUI(QWidget):
         self.content_frame.setObjectName("centralwidget")
 
         self.scrollArea = QtWidgets.QScrollArea(parent=self.content_frame)
-        self.scrollArea.setGeometry(QtCore.QRect(0, 0, 730, 450))
+        self.scrollArea.setGeometry(QtCore.QRect(0, 0, 730, 460))
         self.scrollArea.setWidgetResizable(True)
         self.count=0
         
 
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 741, 440))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 741, 460))
 
 
         self.layout = QGridLayout()
@@ -47,7 +47,7 @@ class MusicGUI(QWidget):
         # Thiết lập QFrame làm content pane của QMainWindow
 
         # Đặt kích thước cho QWidget
-        self.content_frame.setFixedSize(741, 440)
+        self.content_frame.setFixedSize(741, 460)
         
 
         self.setWindowTitle("Example")
