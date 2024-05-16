@@ -2,6 +2,10 @@ import socket
 import threading
 from PyQt6.QtCore import QThread,pyqtSignal
 from MusicBUS import NhacBUS
+from ctPlaylistBUS import ctPlaylistBUS
+from ctCategoryBUS import ctCategoryBUS
+from PlaylistBUS import PlaylistBUS
+from CategoryBUS import CategoryBUS
 import os
 import pygame
 import json
@@ -9,7 +13,7 @@ import json
 class Server(QThread):
     message_received = pyqtSignal(str)
     stopped =pyqtSignal()
-    host = '192.168.93.104'
+    host = 'localhost'#192.168.93.104
     port = 3306
     def __init__(self):
         super().__init__()
@@ -61,6 +65,48 @@ class Server(QThread):
         datadict = [vars(obj) for obj in musicBUS.getData()]
         jsonData = json.dumps(datadict)
         self.clientSocket.sendall(jsonData.encode())
+    def sendPlaylistLIST(self):
+        playlistBUS = PlaylistBUS()
+        dataplaylist = [vars(obj) for obj in playlistBUS.getData()]
+        jsonData = json.dumps(dataplaylist)
+        self.clientSocket.sendall(jsonData.encode())
+    def sendSongsInPlaylist(self,playListID):
+        detailBUS = ctPlaylistBUS()
+        datadict = [vars(obj) for obj in detailBUS.getPlayListByID(playListID)]
+        jsonData = json.dumps(datadict)
+        self.clientSocket.sendall(jsonData.encode())
+    def sendCategoryLIST(self):
+        categoryBUS = CategoryBUS()
+        datadict = [vars(obj) for obj in categoryBUS.getData()]
+        jsonData = json.dumps(datadict)
+        self.clientSocket.sendall(jsonData.encode())
+    def sendSongsInCategory(self,categoryID):
+        detailBUS = ctCategoryBUS()
+        datadict = [vars(obj) for obj in detailBUS.getCategoryByID(categoryID)]
+        jsonData = json.dumps(datadict)
+        self.clientSocket.sendall(jsonData.encode())
+    def addPlayList(self,plid:str,songid:str):
+        ctplbus = ctPlaylistBUS()  
+        for pl in ctplbus.getPlayListByID(plid):
+            if songid == str(pl.songid):
+                self.clientSocket.sendall("0".encode())
+                return
+        ctplbus.addData(plid,songid)
+        self.clientSocket.sendall("1".encode())
+    def removePlayList(self,plid:str,songid:str):
+        ctplbus = ctPlaylistBUS()  
+        for pl in ctplbus.getPlayListByID(plid):
+            if songid == str(pl.songid):
+                ctplbus.delData(plid,songid)
+                self.clientSocket.sendall("1".encode())
+                return
+        self.clientSocket.sendall("0".encode())
+    def addNewPlayList(self,title:str):
+        pl = PlaylistBUS()
+        count = len(pl.getData()) + 1
+        pl.addData(count, title)
+        self.clientSocket.sendall("1".encode())
+
     def getSignal(self):
         self.clientSocket, self.clientAddress = self.serverSocket.accept()
         print(f"Connection established with {self.clientAddress}")
@@ -75,10 +121,38 @@ class Server(QThread):
         elif "GET_IMAGE" in signal:
             imgid = signal.replace("GET_IMAGE_","")
             self.sendImage(imgid)
+        elif "GET_PLAYLIST_LIST" in signal:
+            self.sendPlaylistLIST()
+        elif "GET_SONGS_OF_PLAYLIST" in signal:
+            playlistid = signal.replace("GET_SONGS_OF_PLAYLIST_","")
+            self.sendSongsInPlaylist(playlistid)
+        elif (signal == "GET_CATEGORY_LIST"):
+            self.sendCategoryLIST()
+        elif "GET_SONGS_OF_CATEGORY" in signal:
+            categoryid = signal.replace("GET_SONGS_OF_CATEGORY_","")
+            self.sendSongsInCategory(categoryid)
+        elif "ADD_TO_PLAYLIST" in signal:
+            data = signal.replace("ADD_TO_PLAYLIST_","")
+            self.message_received.emit(self.message)
+            lstdata = data.split("_")
+            plid = lstdata[0]
+            songid=lstdata[1]
+            self.addPlayList(plid,songid)
+        elif "REMOVE_TO_PLAYLIST" in signal:
+            data = signal.replace("REMOVE_TO_PLAYLIST_","")
+            self.message_received.emit(self.message)
+            lstdata = data.split("_")
+            plid = lstdata[0]
+            songid=lstdata[1]
+            self.removePlayList(plid,songid)
+
+        elif "ADD_PLAYLIST" in signal:
+            data = signal.replace("ADD_PLAYLIST_","")
+            self.message_received.emit(self.message)
+            self.addNewPlayList(data)
+
 
         self.clientSocket.close()
-
-        
     def sendImage(self, imageID):
         musicBUS = NhacBUS()  # Thay thế HinhAnhBUS bằng lớp nghiệp vụ hình ảnh của bạn
         image_path = musicBUS.getImageByID(imageID)

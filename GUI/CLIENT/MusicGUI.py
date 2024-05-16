@@ -8,7 +8,9 @@ from Client import Client
 
 
 class MusicGUI(QWidget):
+
     def __init__(self):
+        self.lstMusic = ""
         super().__init__()
         self.initUI()
         
@@ -37,9 +39,9 @@ class MusicGUI(QWidget):
         # Thêm các thành phần vào QFrame
         cont = Client()
         cont.connect()
-        lstMusic = cont.sendSignal("GET_MUSIC_LIST")
-        print(lstMusic)
-        self.addDataToWidget(lstMusic)
+        self.lstMusic = cont.sendSignal("GET_MUSIC_LIST")
+        print(self.lstMusic)
+        self.addDataToWidget(self.lstMusic)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.scrollAreaWidgetContents.setFixedHeight(80*(self.count+1))
         # Thiết lập QFrame làm content pane của QMainWindow
@@ -57,6 +59,9 @@ class MusicGUI(QWidget):
             self.layout.addWidget(self.baihat,row,0)
             self.count+=1
             row+=1
+    
+    def returnMusic(self):
+        return self.lstMusic
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     pl=MusicGUI()

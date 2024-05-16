@@ -9,11 +9,11 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 import sys
-import numpy as np
-# import pyaudio
 import AlbumGUI
 import MusicGUI
 import TrangchuGUI
+import PlaylistGUI
+import CategoryGUI
 from Client import Client
 
 import musicPer
@@ -22,6 +22,10 @@ class Ui_MusicPlayer(QMainWindow):
                 super().__init__()
                 self.setupUi()
                 self.is_bot_shown = False
+                self.mg = MusicGUI.MusicGUI()
+                self.lstMusic = self.mg.returnMusic()
+                self.pg = PlaylistGUI.PlaylistGUI()
+                self.listPlaylist = self.pg.returnPlaylist()
     def setupUi(self):
         self.resize(911, 630)
         self.centralwidget = QWidget()
@@ -43,75 +47,64 @@ class Ui_MusicPlayer(QMainWindow):
         icon1.addPixmap(QtGui.QPixmap("img/music-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnMusic.setIcon(icon1)
         self.btnMusic.setObjectName("btnMusic")
-        #---btnAlbum
-        self.btnAlbum = QPushButton(parent=self.leftMenu)
-        self.btnAlbum.setGeometry(QtCore.QRect(15, 167, 141, 61))
+        #---btnPlaylist
+        self.btnPlaylist = QPushButton(parent=self.leftMenu)
+        self.btnPlaylist.setGeometry(QtCore.QRect(15, 167, 141, 61))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("img/record-vinyl-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.btnAlbum.setIcon(icon2)
-        self.btnAlbum.setObjectName("btnAlbum")
-        #---btnYeuthich
-        self.btnYeuthich = QPushButton(parent=self.leftMenu)
-        self.btnYeuthich.setGeometry(QtCore.QRect(15, 243, 141, 61))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("img/heart-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.btnYeuthich.setIcon(icon3)
-        self.btnYeuthich.setObjectName("btnYeuthich")
+        self.btnPlaylist.setIcon(icon2)
+        self.btnPlaylist.setObjectName("btnAlbum")
         #---
         
-        self.bot = QGroupBox(parent=self.centralwidget)
-        self.bot.setGeometry(QtCore.QRect(0, 490, 911, 101))
-        self.bot.setTitle("")
-        self.bot.setObjectName("bot")
-        self.bot.hide()
-        #---btnPlay
-        self.btnPlay = QPushButton(parent=self.bot)
-        self.btnPlay.setGeometry(QtCore.QRect(400, 50, 41, 41))
-        self.icon4 = QtGui.QIcon()
-        self.icon4.addPixmap(QtGui.QPixmap("img/play-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.btnPlay.setIcon(self.icon4)
-        self.btnPlay.setText("")
-        self.btnPlay.setObjectName("btnPlay")
-        self.icon7 = QtGui.QIcon()
-        self.icon7.addPixmap(QtGui.QPixmap("img/pause-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        #---btnPrev
-        self.btnPrev = QPushButton(parent=self.bot)
-        self.btnPrev.setGeometry(QtCore.QRect(350, 50, 41, 41))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("img/backward-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.btnPrev.setIcon(icon5)
-        self.btnPrev.setText("")
-        self.btnPrev.setObjectName("btnPrev")
-        #---btnNexxt
-        self.btnNexxt = QPushButton(parent=self.bot)
-        self.btnNexxt.setGeometry(QtCore.QRect(450, 50, 41, 41))
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("img/forward-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.btnNexxt.setIcon(icon6)
-        self.btnNexxt.setText("")
-        self.btnNexxt.setObjectName("btnNexxt")
-        #---
-        self.sliderVolumn = QSlider(parent=self.bot)
-        self.sliderVolumn.setGeometry(QtCore.QRect(710, 30, 160, 22))
-        self.sliderVolumn.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.sliderVolumn.setObjectName("sliderVolumn")
+        # self.bot = QGroupBox(parent=self.centralwidget)
+        # self.bot.setGeometry(QtCore.QRect(0, 490, 911, 101))
+        # self.bot.setTitle("")
+        # self.bot.setObjectName("bot")
+        # #---btnPlay
+        # self.btnPlay = QPushButton(parent=self.bot)
+        # self.btnPlay.setGeometry(QtCore.QRect(400, 50, 41, 41))
+        # self.icon4 = QtGui.QIcon()
+        # self.icon4.addPixmap(QtGui.QPixmap("img/play-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        # self.btnPlay.setIcon(self.icon4)
+        # self.btnPlay.setText("")
+        # self.btnPlay.setObjectName("btnPlay")
+        # self.icon7 = QtGui.QIcon()
+        # self.icon7.addPixmap(QtGui.QPixmap("img/pause-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        # #---btnPrev
+        # self.btnPrev = QPushButton(parent=self.bot)
+        # self.btnPrev.setGeometry(QtCore.QRect(350, 50, 41, 41))
+        # icon5 = QtGui.QIcon()
+        # icon5.addPixmap(QtGui.QPixmap("img/backward-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        # self.btnPrev.setIcon(icon5)
+        # self.btnPrev.setText("")
+        # self.btnPrev.setObjectName("btnPrev")
+        # #---btnNexxt
+        # self.btnNexxt = QPushButton(parent=self.bot)
+        # self.btnNexxt.setGeometry(QtCore.QRect(450, 50, 41, 41))
+        # icon6 = QtGui.QIcon()
+        # icon6.addPixmap(QtGui.QPixmap("img/forward-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        # self.btnNexxt.setIcon(icon6)
+        # self.btnNexxt.setText("")
+        # self.btnNexxt.setObjectName("btnNexxt")
+        # #---
 
 
 
-        self.lbNamesone = QLabel(parent=self.bot)
-        self.lbNamesone.setGeometry(QtCore.QRect(20, 30, 161, 41))
-        self.lbNamesone.setText("")
-        self.lbNamesone.setObjectName("lbNamesone")
-        self.sliderTime = QSlider(parent=self.bot)
-        self.sliderTime.setGeometry(QtCore.QRect(260, 10, 321, 22))
-        self.sliderTime.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.sliderTime.setObjectName("sliderTime")
-        self.lbTimeplay = QLabel(parent=self.bot)
-        self.lbTimeplay.setGeometry(QtCore.QRect(210, 10, 41, 16))
-        self.lbTimeplay.setObjectName("lbTimeplay")
-        self.lbTimetong = QLabel(parent=self.bot)
-        self.lbTimetong.setGeometry(QtCore.QRect(590, 10, 41, 16))
-        self.lbTimetong.setObjectName("lbTimetong")
+
+        # self.lbNamesone = QLabel(parent=self.bot)
+        # self.lbNamesone.setGeometry(QtCore.QRect(20, 30, 161, 41))
+        # self.lbNamesone.setText("")
+        # self.lbNamesone.setObjectName("lbNamesone")
+        # self.sliderTime = QSlider(parent=self.bot)
+        # self.sliderTime.setGeometry(QtCore.QRect(260, 10, 321, 22))
+        # self.sliderTime.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        # self.sliderTime.setObjectName("sliderTime")
+        # self.lbTimeplay = QLabel(parent=self.bot)
+        # self.lbTimeplay.setGeometry(QtCore.QRect(210, 10, 41, 16))
+        # self.lbTimeplay.setObjectName("lbTimeplay")
+        # self.lbTimetong = QLabel(parent=self.bot)
+        # self.lbTimetong.setGeometry(QtCore.QRect(590, 10, 41, 16))
+        # self.lbTimetong.setObjectName("lbTimetong")
 
         self.scrollArea = QScrollArea(parent=self.centralwidget)
         self.scrollArea.setGeometry(QtCore.QRect(170, 50, 742, 441))
@@ -149,52 +142,75 @@ class Ui_MusicPlayer(QMainWindow):
         self.pagesPn.setFrameShape(QFrame.Shape.StyledPanel)
         self.pagesPn.setFrameShadow(QFrame.Shadow.Raised)
         self.pagesPn.setObjectName("pagesPn")
+
         self.pagesWidget = QStackedWidget(parent=self.pagesPn)
         self.pagesWidget.setGeometry(QtCore.QRect(0, 0, 742, 550))
         self.pagesWidget.setObjectName("pagesWidget")
-        self.trangchuGUI = TrangchuGUI.TrangchuGUI()
-        self.trangchuGUI.setObjectName("TrangchuGUI")
-        self.pagesWidget.addWidget(self.trangchuGUI)
+        self.categoryGUI = CategoryGUI.CategoryGUI()
+        self.categoryGUI.setObjectName("TrangchuGUI")
+        self.pagesWidget.addWidget(self.categoryGUI)
         self.musicGUI = MusicGUI.MusicGUI()
         self.musicGUI.setObjectName("MusicGUI")
         self.pagesWidget.addWidget(self.musicGUI)
-        self.albumGUI = AlbumGUI.AlbumGUI()
-        self.albumGUI.setObjectName("AlbumGUI")
-        self.pagesWidget.addWidget(self.albumGUI)
+        self.playlistGUI = PlaylistGUI.PlaylistGUI()
+        self.playlistGUI.setObjectName("PlaylistGUI")
+        self.pagesWidget.addWidget(self.playlistGUI)
         self.setCentralWidget(self.centralwidget)
     #----------------------------gan link cho btn
-        self.btnTrangchu.clicked.connect(self.toTrangchu)
-        self.btnMusic.clicked.connect(self.toMusic)
-        self.btnAlbum.clicked.connect(self.toAlbum)
+        self.btnTrangchu.clicked.connect(self.handleBtnCat)
+        self.btnMusic.clicked.connect(self.handleBtnMus)
+        self.btnPlaylist.clicked.connect(self.handleBtnPlaylist)
 
-    # Kết nối sự kiện clicked với hàm on_clicked()
-        self.btnPlay.clicked.connect(self.on_clicked)
+    # # Kết nối sự kiện clicked với hàm on_clicked()
+    #     self.btnPlay.clicked.connect(self.on_clicked)
 
-    def on_clicked(self):
-    # Thay đổi icon khi QPushButton được nhấn
-        if self.btnPlay.icon() == self.icon4:
-            self.btnPlay.setIcon(self.icon7)
-        else:
-            self.btnPlay.setIcon(self.icon4)
+    # def on_clicked(self):
+    # # Thay đổi icon khi QPushButton được nhấn
+    #     if self.btnPlay.icon() == self.icon4:
+    #         self.btnPlay.setIcon(self.icon7)
+    #     else:
+    #         self.btnPlay.setIcon(self.icon4)
 
+    def handleBtnPlaylist(self):
+        self.clearPagesWidget()
+        self.toPlaylist()
+    def handleBtnCat(self):
+        self.clearPagesWidget()
+        self.toTrangchu()
+    def handleBtnMus(self):
+        self.clearPagesWidget()
+        self.toMusic()
+    def clearPagesWidget(self):
+        while self.pagesWidget.count():
+            widget = self.pagesWidget.widget(0)
+            self.pagesWidget.removeWidget(widget)
+            widget.deleteLater()
 
 
     def retranslateUi(self):
         self.setWindowTitle("MusicPlayer")
-        self.btnTrangchu.setText("Trang chủ")
+        self.btnTrangchu.setText("Category")
         self.btnMusic.setText("Music")
-        self.btnAlbum.setText("Album")
-        self.btnYeuthich.setText("Like")
-        self.lbTimeplay.setText("00:00")
-        self.lbTimetong.setText("00:00")
+        self.btnPlaylist.setText("Playlist")
+        # self.lbTimeplay.setText("00:00")
+        # self.lbTimetong.setText("00:00")
     def toTrangchu(self):
-        self.pagesWidget.setCurrentWidget(self.trangchuGUI)
+        self.categoryGUI = CategoryGUI.CategoryGUI()
+        self.categoryGUI.setObjectName("TrangchuGUI")
+        self.pagesWidget.addWidget(self.categoryGUI)
+        self.pagesWidget.setCurrentWidget(self.categoryGUI)
 
     def toMusic(self):
+        self.musicGUI = MusicGUI.MusicGUI()
+        self.musicGUI.setObjectName("MusicGUI")
+        self.pagesWidget.addWidget(self.musicGUI)
         self.pagesWidget.setCurrentWidget(self.musicGUI)
 
-    def toAlbum(self):
-        self.pagesWidget.setCurrentWidget(self.albumGUI)
+    def toPlaylist(self):
+        self.playlistGUI = PlaylistGUI.PlaylistGUI()
+        self.playlistGUI.setObjectName("PlaylistGUI")
+        self.pagesWidget.addWidget(self.playlistGUI)
+        self.pagesWidget.setCurrentWidget(self.playlistGUI)
 
 
 if __name__ == "__main__":
