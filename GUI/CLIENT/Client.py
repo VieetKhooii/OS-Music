@@ -4,7 +4,7 @@ import pygame
 import tempfile
 import os
 class Client():
-    host = '192.168.93.104'
+    host = 'localhost'
     port = 3306
 
     def __init__(self):
@@ -120,5 +120,34 @@ class Client():
         temp_image_file.seek(0)
         return temp_image_file
 
-        
+    def sendAddToPlaylist(self,signal):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.host, self.port))
+        try:
+            if self.socket:
+                self.socket.sendall(signal.encode())
+                print(f"Signal {signal} sent successfully!")
+                received = self.socket.recv(1024)
+                received = received.decode("utf-8")
+                return received
+            else:
+                print("Socket connection not established.")
+        except Exception as e:
+            print(f"Error sending signal: {e}")
+    def sendRemovePlayList(self,signal):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.host, self.port))
+        try:
+            if self.socket:
+                self.socket.sendall(signal.encode())
+                print(f"Signal {signal} sent successfully!")
+                received = self.socket.recv(1024)
+                received = received.decode("utf-8")
+                return received
+            else:
+                print("Socket connection not established.")
+        except Exception as e:
+            print(f"Error sending signal: {e}")
+
+
 client = Client()

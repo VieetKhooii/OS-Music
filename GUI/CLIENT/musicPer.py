@@ -11,10 +11,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import Qt
 from Client import Client
-from gui import Ui_MusicPlayer
 import pygame
-import os
-# import mutagen
+
 
 class Ui_Form(QWidget):
     def __init__(self, id, name, artist, img, link):
@@ -33,7 +31,7 @@ class Ui_Form(QWidget):
     def setupUi(self):
         self.resize(585, 94)
         self.frame = QtWidgets.QFrame(self)
-        self.frame.setGeometry(QtCore.QRect(10, 10, 571, 80))
+        self.frame.setGeometry(QtCore.QRect(10, 10, 740, 80))
         self.frame.setStyleSheet("background-color: rgb(160,190,228);")
         self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
@@ -56,8 +54,13 @@ class Ui_Form(QWidget):
         self.pushButton = QtWidgets.QPushButton(parent=self.frame)
         self.pushButton.setGeometry(QtCore.QRect(420, 10, 61, 61))
         self.pushButton.setObjectName("pushButton")
-
         self.pushButton.clicked.connect(self.playSong)
+
+        self.btnPlayList = QtWidgets.QPushButton(parent=self.frame)
+        self.btnPlayList.setGeometry(QtCore.QRect(540, 10, 61, 61))
+        self.btnPlayList.setObjectName("pushButton")
+        self.btnPlayList.clicked.connect(self.sendshowToPlaylist)
+
 
         self.retranslateUi()
 
@@ -71,24 +74,32 @@ class Ui_Form(QWidget):
         self.icon4.addPixmap(QtGui.QPixmap("img/play-solid.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton.setIcon(self.icon4)
 
-    # def playSong(self):
-    #         conn = Client()
-    #         conn.connect()
-    #         pygame.mixer.init()
-            
-    #         if not self.isPlaying:  # Nếu đang dừng, phát nhạc
-    #             try:
-    #                 conn.playSongFromServer(self.id)
-    #                 self.isPlaying = True  # Cập nhật trạng thái thành "đang phát"
-    #                 self.pushButton.setIcon(self.icon7)
-                    
-    #             except Exception as e:
-    #                 QMessageBox.information(None, "Thông báo!", "Lỗi khi phát nhạc!")
-    #         else:  # Nếu đang phát, dừng nhạc
-    #             pygame.mixer.music.stop()
+    def sendshowToPlaylist(self):
+        client = Client()
+        client.connect()
+        idPlaylist = client.sendSignal("GET_PLAYLIST_LIST")
 
-    #             self.isPlaying = False  # Cập nhật trạng thái thành "đã dừng"
-    #             self.pushButton.setIcon(self.icon4)
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("Thêm vào Playlist")
+        msgBox.setFixedSize(1000, 900)
+        msgBox.setText("Thêm vào PlayList số : ")
+        for i in idPlaylist:          
+            choosebutton = QPushButton(str(i['id']), self)
+            msgBox.addButton(choosebutton, QMessageBox.ButtonRole.AcceptRole)
+            choosebutton.clicked.connect(lambda _, id=i['id']: self.sendToPlaylist(id, msgBox))
+        msgBox.exec()
+    def sendToPlaylist(self,id:str,msgBox):
+        client = Client()
+        client.connect()
+        
+        receive = client.sendAddToPlaylist("ADD_TO_PLAYLIST_" + str(id) + "_" + self.id)
+        print(receive)
+        msgBox.close()
+
+        # Kết nối sự kiện nhấp vào nút OK với phương thức xử lý
+
+        msgBox.exec()
+
 
     def getTime(self):
             pygame.mixer.init()
