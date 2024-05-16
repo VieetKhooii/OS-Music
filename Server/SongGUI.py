@@ -18,7 +18,9 @@ class SongGUI(QWidget):
         self.updateBtn.clicked.connect(self.update_music)
         self.tableWidget.itemClicked.connect(self.show_selected_music)
         self.importBtn.clicked.connect(self.importFile)
+        self.importBtn_2.clicked.connect(self.importFile)
         self.file_path = None
+        self.thumbnailFile = None
         self.populate_table()
 
     def importFile(self):
@@ -28,6 +30,15 @@ class SongGUI(QWidget):
             self.file_path = fileName
             self.fileTxt.setPlainText(self.get_last_segment(fileName))
         return fileName
+    
+    def importThumbnail(self):
+            options = QFileDialog.Options()
+            fileName, _ = QFileDialog.getOpenFileName(self, "Select File to Import", "","All Files (*);;Text Files (*.txt)", options=options)
+            if fileName:
+                self.thumbnailFile = fileName
+                self.thumbNailTxt.setPlainText(self.get_last_segment(fileName))
+            return fileName
+
     def get_last_segment(self, url):
         segments = url.split('/')
         last_segment = segments[-1]
@@ -64,10 +75,12 @@ class SongGUI(QWidget):
             selected_item = self.categoryComboBox.currentText()
             category_id = selected_item.split(' - ')[-1]
             if name and not id:
-                if self.music_dao.create_music(name, artist,"", link, category_id):
+                if self.music_dao.create_music(name, artist, thumbnail, link, category_id):
                     print("music created successfully.")
                     destination_dir = "C:/Users/VieetKhooii/OneDrive/Desktop/OSMusic/OS-Music/Server/songs"
+                    thumbnail_dir = "C:\Users\VieetKhooii\OneDrive\Desktop\OSMusic\OS-Music\Server\dao\imgs"
                     shutil.copy(self.file_path, destination_dir)
+                    shutil.copy(self.thumbnailFile, thumbnail_dir)
                     print("File copied to:", destination_dir)
                     self.musicNameTxt.clear()
                     self.populate_table()
